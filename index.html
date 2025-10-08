@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynthAI Draw - AI-Powered Art Creation</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1', // Indigo
+                        secondary: '#ec4899', // Pink
+                        accent: '#8b5cf6', // Violet
+                        dark: '#1e1b4b',
+                        light: '#f8fafc',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+            }
+            .gradient-text {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                background-image: linear-gradient(90deg, #6366f1, #ec4899);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px);
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-light text-dark antialiased overflow-x-hidden">
+    <!-- Navbar -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center space-x-2">
+                        <i class="fa fa-paint-brush text-2xl text-primary"></i>
+                        <span class="text-xl font-bold gradient-text">SynthAI Draw</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-primary transition-all font-medium">Features</a>
+                    <a href="#gallery" class="text-gray-600 hover:text-primary transition-all font-medium">Gallery</a>
+                    <a href="#how-it-works" class="text-gray-600 hover:text-primary transition-all font-medium">How It Works</a>
+                    <a href="#download" class="text-gray-600 hover:text-primary transition-all font-medium">Download</a>
+                    <a href="#faq" class="text-gray-600 hover:text-primary transition-all font-medium">FAQ</a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-dark focus:outline-none">
+                    <i class="fa fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="md:hidden hidden pb-4">
+                <div class="flex flex-col space-y-3">
+                    <a href="#features" class="text-gray-600 hover:text-primary transition-all font-medium py-2">Features</a>
+                    <a href="#gallery" class="text-gray-600 hover:text-primary transition-all font-medium py-2">Gallery</a>
+                    <a href="#how-it-works" class="text-gray-600 hover:text-primary transition-all font-medium py-2">How It Works</a>
+                    <a href="#download" class="text-gray-600 hover:text-primary transition-all font-medium py-2">Download</a>
+                    <a href="#faq" class="text-gray-600 hover:text-primary transition-all font-medium py-2">FAQ</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-br from-indigo-50 to-purple-50 relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-20 left-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 right-10 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0">
+                    <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-tight text-shadow mb-6">
+                        Turn your <span class="gradient-text">ideas</span> into stunning art
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8 max-w-lg">
+                        SynthAI Draw transforms text descriptions into beautiful artwork in seconds. Unleash your creativity with the power of artificial intelligence.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#download" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all text-center shadow-lg shadow-primary/20">
+                            <i class="fa fa-download mr-2"></i> Download App
+                        </a>
+                        <a href="#how-it-works" class="border-2 border-primary text-primary hover:bg-primary/5 px-8 py-3 rounded-lg text-lg font-medium transition-all flex items-center justify-center space-x-2">
+                            <i class="fa fa-play-circle"></i>
+                            <span>See How It Works</span>
+                        </a>
+                    </div>
+                    <div class="mt-10 flex flex-wrap items-center gap-4">
+                        <div class="flex -space-x-2">
+                            <img src="https://picsum.photos/id/1001/40/40" alt="User avatar" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://picsum.photos/id/1002/40/40" alt="User avatar" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://picsum.photos/id/1003/40/40" alt="User avatar" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://picsum.photos/id/1004/40/40" alt="User avatar" class="w-10 h-10 rounded-full border-2 border-white">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center border-2 border-white text-xs font-bold">
+                                +50k
+                            </div>
+                        </div>
+                        <p class="text-gray-600">
+                            <span class="font-semibold text-dark">50,000+</span> artists create with us
+                        </p>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <div class="relative z-10 rounded-xl overflow-hidden shadow-2xl transform transition-transform hover:scale-[1.02] duration-500 border-8 border-white">
+                        <img src="https://picsum.photos/id/96/600/800" alt="SynthAI Draw App Interface" class="w-full h-auto">
+                    </div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl blur-3xl -z-10 transform rotate-3"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Badges Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 mb-8 font-medium">AVAILABLE ON</p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
+                <a href="#" class="flex items-center bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition-all">
+                    <i class="fa fa-apple text-3xl mr-3"></i>
+                    <div>
+                        <div class="text-xs">Download on the</div>
+                        <div class="font-bold text-lg">App Store</div>
+                    </div>
+                </a>
+                <a href="#" class="flex items-center bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition-all">
+                    <i class="fa fa-android text-3xl mr-3"></i>
+                    <div>
+                        <div class="text-xs">Get it on</div>
+                        <div class="font-bold text-lg">Google Play</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">Powerful AI Art Features</h2>
+                <p class="text-xl text-gray-600">Create amazing artwork with these advanced capabilities</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 card-hover">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-magic text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Text to Image</h3>
+                    <p class="text-gray-600">Transform any text description into a unique image. Simply type what you imagine, and watch it come to life.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 card-hover">
+                    <div class="w-14 h-14 bg-pink-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-refresh text-2xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Style Transfer</h3>
+                    <p class="text-gray-600">Apply famous artistic styles to your photos. Turn your pictures into Van Gogh, Picasso, or Warhol masterpieces.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 card-hover">
+                    <div class="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-object-group text-2xl text-accent"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Image Remix</h3>
+                    <p class="text-gray-600">Upload an image and let AI transform it. Change backgrounds, styles, and elements while preserving key features.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 card-hover">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-sliders text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Custom Controls</h3>
+                    <p class="text-gray-600">Fine-tune your creations with advanced controls. Adjust style, composition, lighting, and details to perfection.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 card-hover">
+                    <div class="w-14 h-14 bg-pink-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-download text-2xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">High-Res Export</h3>
+                    <p class="text-gray-600">Download your creations in high resolution. Perfect for printing, sharing on social media, or using in projects.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 card-hover">
+                    <div class="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-share-alt text-2xl text-accent"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Easy Sharing</h3>
+                    <p class="text-gray-600">Share your AI-generated art directly to social media platforms or with friends through messaging apps.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">Inspiring Creations</h2>
+                <p class="text-xl text-gray-600">Check out these amazing artworks created with SynthAI Draw</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="overflow-hidden rounded-xl group cursor-pointer">
+                    <img src="https://picsum.photos/id/1015/600/600" alt="AI Generated Art" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-xl group cursor-pointer">
+                    <img src="https://picsum.photos/id/1016/600/600" alt="AI Generated Art" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-xl group cursor-pointer">
+                    <img src="https://picsum.photos/id/1018/600/600" alt="AI Generated Art" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-xl group cursor-pointer">
+                    <img src="https://picsum.photos/id/1019/600/600" alt="AI Generated Art" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-xl group cursor-pointer">
+                    <img src="https://picsum.photos/id/1039/600/600" alt="AI Generated Art" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-xl group cursor-pointer">
+                    <img src="https://picsum.photos/id/1043/600/600" alt="AI Generated Art" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-xl group cursor-pointer">
+                    <img src="https://picsum.photos/id/1047/600/600" alt="AI Generated Art" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-xl group cursor-pointer">
+                    <img src="https://picsum.photos/id/1059/600/600" alt="AI Generated Art" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-all">
+                    <span>View Full Gallery</span>
+                    <i class="fa fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-gradient-to-br from-indigo-50 to-purple-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">Create Art in 3 Simple Steps</h2>
+                <p class="text-xl text-gray-600">Turn your ideas into beautiful artwork with these easy steps</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                <!-- Connecting Line -->
+                <div class="hidden md:block absolute top-1/4 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary -z-10"></div>
+                
+                <!-- Step 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm text-center relative card-hover">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">1</div>
+                    <h3 class="text-xl font-bold mb-3">Describe Your Vision</h3>
+                    <p class="text-gray-600">Write a detailed description of what you want to create. Be specific about styles, subjects, and elements.</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm text-center relative card-hover">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">2</div>
+                    <h3 class="text-xl font-bold mb-3">Customize & Generate</h3>
+                    <p class="text-gray-600">Choose art styles, adjust parameters, and let AI generate your unique artwork in seconds.</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm text-center relative card-hover">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">3</div>
+                    <h3 class="text-xl font-bold mb-3">Refine & Share</h3>
+                    <p class="text-gray-600">Make adjustments if needed, then download your creation or share it directly to social media.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">Loved by Artists Worldwide</h2>
+                <p class="text-xl text-gray-600">See what our community is saying about SynthAI Draw</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-sm">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"SynthAI Draw has revolutionized my creative process. As a designer, I can quickly visualize concepts and iterate on ideas in ways that were impossible before."</p>
+                    <div class="flex items-center">
+                        <img src="https://picsum.photos/id/1012/48/48" alt="User avatar" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Alex Morgan</h4>
+                            <p class="text-sm text-gray-500">Graphic Designer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-sm">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"I've never been good at drawing, but with SynthAI Draw, I can create beautiful illustrations for my stories. The AI understands my descriptions perfectly!"</p>
+                    <div class="flex items-center">
+                        <img src="https://picsum.photos/id/1027/48/48" alt="User avatar" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Sarah Chen</h4>
+                            <p class="text-sm text-gray-500">Author & Illustrator</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-sm">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"The style transfer feature is incredible! I can turn my family photos into works of art in different styles. It's become a hit at family gatherings."</p>
+                    <div class="flex items-center">
+                        <img src="https://picsum.photos/id/1074/48/48" alt="User avatar" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Michael Rodriguez</h4>
+                            <p class="text-sm text-gray-500">Photography Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download CTA Section -->
+    <section id="download" class="py-20 bg-gradient-to-r from-dark to-indigo-900 text-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">Start Creating Amazing Art Today</h2>
+                <p class="text-xl text-indigo-200 mb-10">Download SynthAI Draw and unlock your creative potential with AI-powered art generation</p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="#" class="bg-white text-dark hover:bg-gray-100 px-8 py-4 rounded-xl text-lg font-medium transition-all flex items-center justify-center shadow-lg">
+                        <i class="fa fa-apple text-2xl mr-3"></i>
+                        <div class="text-left">
+                            <div class="text-xs">Download on the</div>
+                            <div class="font-bold">App Store</div>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white text-dark hover:bg-gray-100 px-8 py-4 rounded-xl text-lg font-medium transition-all flex items-center justify-center shadow-lg">
+                        <i class="fa fa-android text-2xl mr-3"></i>
+                        <div class="text-left">
+                            <div class="text-xs">Get it on</div>
+                            <div class="font-bold">Google Play</div>
+                        </div>
+                    </a>
+                </div>
+                <p class="mt-8 text-indigo-200">Available on iOS 14+ and Android 8.0+</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-600">Find answers to common questions about SynthAI Draw</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto space-y-6">
+                <!-- FAQ Item 1 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-medium focus:outline-none" data-target="faq1">
+                        <span>How does SynthAI Draw generate images?</span>
+                        <i class="fa fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq1" class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">SynthAI Draw uses advanced artificial intelligence models trained on millions of images. When you provide a text description, the AI interprets your request and generates a unique image that matches your description by combining patterns and styles it has learned.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-medium focus:outline-none" data-target="faq2">
+                        <span>Do I own the images I create?</span>
+                        <i class="fa fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq2" class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">Yes, you own the rights to the images you create with SynthAI Draw. You can use them for personal or commercial purposes, including social media, websites, printed materials, and more.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-medium focus:outline-none" data-target="faq3">
+                        <span>Is there a limit to how many images I can generate?</span>
+                        <i class="fa fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq3" class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">The free version includes a limited number of daily generations. Premium subscriptions offer unlimited image generation, higher resolution exports, and access to advanced features.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-medium focus:outline-none" data-target="faq4">
+                        <span>Can I use my own photos with the app?</span>
+                        <i class="fa fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq4" class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">Absolutely! SynthAI Draw allows you to upload your own photos and apply various AI effects, including style transfer, background removal, and creative transformations while preserving key elements of your original image.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-medium focus:outline-none" data-target="faq5">
+                        <span>How often is the app updated with new features?</span>
+                        <i class="fa fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div id="faq5" class="faq-content hidden px-6 pb-6">
+                        <p class="text-gray-600">We release updates regularly, typically every 2-4 weeks. These updates include new AI models, artistic styles, features, and improvements based on user feedback. Premium subscribers get early access to select new features.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-gray-400 py-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i class="fa fa-paint-brush text-2xl text-white"></i>
+                        <span class="text-xl font-bold text-white">SynthAI Draw</span>
+                    </div>
+                    <p class="mb-6">Transform your ideas into stunning artwork with the power of artificial intelligence. Unleash your creativity today.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i class="fa fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i class="fa fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i class="fa fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i class="fa fa-youtube-play text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">App</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="hover:text-white transition-all">Features</a></li>
+                        <li><a href="#gallery" class="hover:text-white transition-all">Gallery</a></li>
+                        <li><a href="#download" class="hover:text-white transition-all">Download</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#faq" class="hover:text-white transition-all">FAQ</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Tutorials</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition-all">About</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2023 SynthAI Draw. All rights reserved.</p>
+                <div class="mt-4 md:mt-0">
+                    <ul class="flex space-x-6">
+                        <li><a href="#" class="hover:text-white transition-all">Terms</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuButton.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        });
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2', 'shadow-md');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2', 'shadow-md');
+            }
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        const icon = mobileMenuButton.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                    
+                    // Scroll to target
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // FAQ Accordions
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const targetId = toggle.getAttribute('data-target');
+                const targetContent = document.getElementById(targetId);
+                const icon = toggle.querySelector('i');
+                
+                // Close all other FAQs
+                document.querySelectorAll('.faq-content').forEach(content => {
+                    if (content.id !== targetId && !content.classList.contains('hidden')) {
+                        content.classList.add('hidden');
+                        const otherIcon = document.querySelector(`[data-target="${content.id}"] i`);
+                        otherIcon.classList.remove('rotate-180');
+                    }
+                });
+                
+                // Toggle current FAQ
+                targetContent.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+    </script>
+</body>
+</html>
+    
